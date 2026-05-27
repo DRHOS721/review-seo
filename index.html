@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReviewSEO - Генератор SEO-ответов</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        purple: {
+                            450: '#a855f7',
+                            550: '#9333ea',
+                            650: '#7e22ce',
+                        },
+                        fuchsia: {
+                            450: '#d946ef',
+                            550: '#c026d3',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: #a855f7;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+        
+        .radio-custom:checked + label {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: #a855f7;
+            color: #e9d5ff;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-450 to-fuchsia-450 bg-clip-text text-transparent">
+                ReviewSEO
+            </h1>
+            <p class="text-gray-300 text-lg">Генератор умных SEO-ответов для Wildberries и Ozon</p>
+        </header>
+
+        <!-- Main Card -->
+        <div class="glass-effect rounded-2xl p-8 mb-8">
+            <form id="seoForm" class="space-y-6">
+                <!-- Review Input -->
+                <div>
+                    <label for="review" class="block text-sm font-medium text-gray-300 mb-2">
+                        Текст отзыва покупателя
+                    </label>
+                    <textarea 
+                        id="review" 
+                        rows="4" 
+                        class="input-field w-full rounded-xl p-4 text-white placeholder-gray-400 resize-none"
+                        placeholder="Вставьте текст отзыва здесь..."
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Keywords Input -->
+                <div>
+                    <label for="keywords" class="block text-sm font-medium text-gray-300 mb-2">
+                        Ключевые слова (через запятую)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="keywords" 
+                        class="input-field w-full rounded-xl p-4 text-white placeholder-gray-400"
+                        placeholder="качественный товар, быстрая доставка, рекомендую"
+                        required
+                    />
+                </div>
+
+                <!-- Tone Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-3">
+                        Тональность ответа
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="relative">
+                            <input type="radio" name="tone" id="positive" value="positive" class="radio-custom sr-only" checked>
+                            <label for="positive" class="block p-3 rounded-xl border border-gray-600 text-center cursor-pointer hover:border-purple-450 transition-all">
+                                😊 Позитивный
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="radio" name="tone" id="apologetic" value="apologetic" class="radio-custom sr-only">
+                            <label for="apologetic" class="block p-3 rounded-xl border border-gray-600 text-center cursor-pointer hover:border-purple-450 transition-all">
+                                🙏 Извинительный
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="radio" name="tone" id="humorous" value="humorous" class="radio-custom sr-only">
+                            <label for="humorous" class="block p-3 rounded-xl border border-gray-600 text-center cursor-pointer hover:border-purple-450 transition-all">
+                                😄 С юмором
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="radio" name="tone" id="strict" value="strict" class="radio-custom sr-only">
+                            <label for="strict" class="block p-3 rounded-xl border border-gray-600 text-center cursor-pointer hover:border-purple-450 transition-all">
+                                ⚖️ Строгий
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button 
+                    type="submit" 
+                    class="btn-primary w-full py-4 rounded-xl font-semibold text-lg text-white shadow-lg"
+                >
+                    ✨ Сгенерировать SEO-ответ
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden fade-in">
+            <div class="glass-effect rounded-2xl p-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-purple-450">Готовый ответ</h2>
+                    <button 
+                        id="copyBtn"
+                        class="bg-purple-650 hover:bg-purple-550 px-4 py-2 rounded-lg transition-all flex items-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        Копировать
+                    </button>
+                </div>
+                <div 
+                    id="resultText" 
+                    class="bg-gray-900/50 rounded-xl p-6 text-gray-200 leading-relaxed whitespace-pre-wrap"
+                ></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Advanced SEO Response Generator
+        class SEOGenerator {
+            constructor() {
+                this.templates = {
+                    positive: {
+                        greetings: [
+                            "Здравствуйте! 👋",
+                            "Добрый день! ☀️",
+                            "Приветствуем вас! 🌟",
+                            "Рады видеть ваш отзыв! 💫"
+                        ],
+                        thanks: [
+                            "Огромное спасибо за такие теплые слова!",
+                            "Благодарим за высокую оценку нашей работы!",
+                            "Спасибо, что нашли время поделиться впечатлениями!",
+                            "Ваш отзыв очень важен для нас!"
+                        ],
+                        keywords: [
+                            "Мы действительно стараемся, чтобы каждый {keyword} радовал наших покупателей.",
+                            "Для нас важно, чтобы {keyword} был на высшем уровне.",
+                            "Особенно приятно слышать, что вы оценили наш {keyword}.",
+                            "Мы уделяем особое внимание тому, чтобы {keyword} превосходил ожидания."
+                        ],
+                        closing: [
+                            "Будем рады видеть вас снова! 🛍️",
+                            "Ждем ваших новых заказов! 💜",
+                            "Всегда готовы порадовать вас качественными товарами! ✨",
+                            "До новых встреч в нашем магазине! 🎉"
+                        ]
+                    },
+                    apologetic: {
+                        greetings: [
+                            "Здравствуйте! Приносим свои извинения.",
+                            "Добрый день! Нам очень жаль, что так вышло.",
+                            "Здравствуйте! Спасибо, что сообщили нам об этом.",
+                            "Приветствуем! Просим прощения за неудобства."
+                        ],
+                        thanks: [
+                            "Благодарим за обратную связь — это помогает нам становиться лучше.",
+                            "Спасибо, что дали нам возможность исправить ситуацию.",
+                            "Ценим вашу честность и конструктивный подход.",
+                            "Ваш отзыв очень важен для улучшения нашего сервиса."
+                        ],
+                        keywords: [
+                            "Мы уже работаем над тем, чтобы {keyword} соответствовал самым высоким стандартам.",
+                            "Принимаем все меры, чтобы в будущем {keyword} был безупречным.",
+                            "Учитываем ваше замечание и улучшаем наш {keyword}.",
+                            "Ваше мнение поможет нам сделать {keyword} лучше для всех покупателей."
+                        ],
+                        closing: [
+                            "Надеемся на возможность загладить свою вину! 🙏",
+                            "Готовы предложить вам персональную скидку на следующий заказ! 💝",
+                            "Обещаем стать лучше ради таких покупателей, как вы! ✨",
+                            "Ждем возможности вернуть ваше доверие! 🌟"
+                        ]
+                    },
+                    humorous: {
+                        greetings: [
+                            "Ого, какой отзыв! 😄",
+                            "Вот это да! Спасибо за эмоции! 🎭",
+                            "Улыбнули нас с утра! ☕",
+                            "Читаем и улыбаемся! 😊"
+                        ],
+                        thanks: [
+                            "Спасибо за такой креативный отзыв!",
+                            "Ваши слова — лучший подарок для нашей команды!",
+                            "Такие отзывы заряжают нас на весь день!",
+                            "Вы мастер слова! Спасибо!"
+                        ],
+                        keywords: [
+                            "Наш {keyword} теперь официально звезда! ⭐",
+                            "Даже наш {keyword} смущен таким вниманием! 😅",
+                            "{keyword} передает вам привет и благодарность!",
+                            "Теперь наш {keyword} будет работать с удвоенной силой!"
+                        ],
+                        closing: [
+                            "Заходите еще — у нас всегда весело! 🎪",
+                            "Ждем новых приключений вместе с вами! 🚀",
+                            "До следующей покупки — не скучайте! 😉",
+                            "Ваш постоянный источник хорошего настроения! 🌈"
+                        ]
+                    },
+                    strict: {
+                        greetings: [
+                            "Здравствуйте.",
+                            "Добрый день.",
+                            "Благодарим за отзыв.",
+                            "Принято к сведению."
+                        ],
+                        thanks: [
+                            "Спасибо за предоставленную информацию.",
+                            "Ваше мнение учтено в нашей работе.",
+                            "Благодарим за конструктивную обратную связь.",
+                            "Отмечаем ваши комментарии."
+                        ],
+                        keywords: [
+                            "Контролируем качество {keyword} на всех этапах.",
+                            "Стандарты {keyword} соответствуют требованиям рынка.",
+                            "Мониторим показатели {keyword} регулярно.",
+                            "Обеспечиваем соответствие {keyword} заявленным характеристикам."
+                        ],
+                        closing: [
+                            "Готовы к дальнейшему сотрудничеству.",
+                            "Ожидаем ваших следующих заказов.",
+                            "Продолжаем работу в штатном режиме.",
+                            "На связи для решения вопросов."
+                        ]
+                    }
+                };
+            }
+
+            analyzeReview(review) {
+                const lowerReview = review.toLowerCase();
+                const negativeWords = ['плохо', 'ужасно', 'разочарован', 'недоволен', 'брак', 'сломался', 'не работает', 'верните деньги', 'жалею', 'ошибка', 'проблема'];
+                const positiveWords = ['отлично', 'прекрасно', 'восхищен', 'доволен', 'качественно', 'рекомендую', 'супер', 'класс', 'замечательно', 'благодарю'];
+                
+                let sentiment = 'neutral';
+                let negativeCount = 0;
+                let positiveCount = 0;
+                
+                negativeWords.forEach(word => {
+                    if (lowerReview.includes(word)) negativeCount++;
+                });
+                
+                positiveWords.forEach(word => {
+                    if (lowerReview.includes(word)) positiveCount++;
+                });
+                
+                if (negativeCount > positiveCount) sentiment = 'negative';
+                else if (positiveCount > negativeCount) sentiment = 'positive';
+                
+                return {
+                    sentiment,
+                    length: review.length,
+                    hasQuestions: review.includes('?'),
+                    wordCount: review.split(' ').length
+                };
+            }
+
+            integrateKeywords(keywords, template, analysis) {
+                const keywordArray = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0);
+                
+                if (keywordArray.length === 0) {
+                    return template.replace(/{keyword}/g, 'товар');
+                }
+                
+                let result = template;
+                const keywordMatches = (template.match(/{keyword}/g) || []).length;
+                
+                for (let i = 0; i < Math.min(keywordMatches, keywordArray.length); i++) {
+                    result = result.replace('{keyword}', keywordArray[i]);
+                }
+                
+                // Replace any remaining {keyword} placeholders
+                if (result.includes('{keyword}')) {
+                    const randomKeyword = keywordArray[Math.floor(Math.random() * keywordArray.length)];
+                    result = result.replace(/{keyword}/g, randomKeyword);
+                }
+                
+                return result;
+            }
+
+            generateResponse(review, keywords, tone) {
+                const analysis = this.analyzeReview(review);
+                const templates = this.templates[tone];
+                
+                // Smart template selection based on analysis
+                let greetingIndex = Math.floor(Math.random() * templates.greetings.length);
+                let thanksIndex = Math.floor(Math.random() * templates.thanks.length);
+                let keywordsIndex = Math.floor(Math.random() * templates.keywords.length);
+                let closingIndex = Math.floor(Math.random() * templates.closing.length);
+                
+                // Adjust based on review characteristics
+                if (analysis.sentiment === 'negative' && tone !== 'apologetic') {
+                    // If review is negative but user didn't choose apologetic, lean towards more careful responses
+                    greetingIndex = Math.min(greetingIndex, 1); // Choose more formal greetings
+                }
+                
+                if (analysis.hasQuestions) {
+                    // If review has questions, make closing more inviting
+                    closingIndex = Math.max(closingIndex, 2);
+                }
+                
+                const greeting = templates.greetings[greetingIndex];
+                const thanks = templates.thanks[thanksIndex];
+                const keywordsTemplate = templates.keywords[keywordsIndex];
+                const closing = templates.closing[closingIndex];
+                
+                // Integrate keywords
+                const keywordsIntegrated = this.integrateKeywords(keywords, keywordsTemplate, analysis);
+                
+                // Build response with natural paragraph breaks
+                const response = `${greeting}\n\n${thanks}\n\n${keywordsIntegrated}\n\n${closing}`;
+                
+                return response;
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            const generator = new SEOGenerator();
+            const form = document.getElementById('seoForm');
+            const resultSection = document.getElementById('resultSection');
+            const resultText = document.getElementById('resultText');
+            const copyBtn = document.getElementById('copyBtn');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const review = document.getElementById('review').value.trim();
+                const keywords = document.getElementById('keywords').value.trim();
+                const tone = document.querySelector('input[name="tone"]:checked').value;
+                
+                if (!review || !keywords) {
+                    alert('Пожалуйста, заполните все поля');
+                    return;
+                }
+                
+                // Generate response
+                const response = generator.generateResponse(review, keywords, tone);
+                
+                // Display result
+                resultText.textContent = response;
+                resultSection.classList.remove('hidden');
+                
+                // Scroll to result
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            copyBtn.addEventListener('click', async () => {
+                const text = resultText.textContent;
+                
+                try {
+                    await navigator.clipboard.writeText(text);
+                    
+                    // Show success feedback
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = `
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Скопировано!
+                    `;
+                    copyBtn.classList.add('bg-green-600');
+                    copyBtn.classList.remove('bg-purple-650');
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.classList.remove('bg-green-600');
+                        copyBtn.classList.add('bg-purple-650');
+                    }, 2000);
+                } catch (err) {
+                    alert('Не удалось скопировать текст. Пожалуйста, выделите и скопируйте вручную.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
